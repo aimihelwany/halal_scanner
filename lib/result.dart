@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:halal_scanner/subscribe.dart';
+import 'package:halal_scanner/sign_in.dart';
 
 class HalalResult extends StatelessWidget {
   @override

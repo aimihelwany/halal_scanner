@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:halal_scanner/result.dart';
+import 'package:halal_scanner/sign_in.dart';
 
 class Subscribe extends StatelessWidget {
   @override
@@ -18,7 +19,7 @@ class Subscribe extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => HalalResult(),
+                  builder: (context) => SignIn(),
                 ),
               );
             },
