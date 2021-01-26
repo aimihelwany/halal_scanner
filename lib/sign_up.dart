@@ -1,20 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:halal_scanner/auth.dart';
 import 'package:halal_scanner/dashboard.dart';
+import 'package:halal_scanner/loading.dart';
 import 'package:halal_scanner/sign_in.dart';
 
 class SignUp extends StatefulWidget {
+
+  final Function toggleView;
+  SignUp({ this.toggleView });
+
   @override
   _SignUpState createState() => _SignUpState();
 }
 
 class _SignUpState extends State<SignUp> {
+
+  final AuthService _auth = AuthService();
+  final _formKey = GlobalKey<FormState>();
+  bool loading = false;
+
   String email = '';
   String password = '';
-  String username = '';
+  String error = '';
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return loading? Loading() : Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.green[300],
@@ -25,12 +36,7 @@ class _SignUpState extends State<SignUp> {
             icon: Icon(Icons.person),
             label: Text('Sign In'),
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => SignIn(),
-                ),
-              );
+              widget.toggleView();
             },
           )
         ],
@@ -41,6 +47,7 @@ class _SignUpState extends State<SignUp> {
           vertical: 5.0,
         ),
         child: Form(
+          key: _formKey,
           child: Column(
             children: <Widget>[
               CircleAvatar(
@@ -55,30 +62,27 @@ class _SignUpState extends State<SignUp> {
                   'SIGN UP TO HALAL SCANNER APP',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontSize: 30.0,
+                    fontSize: 20.0,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-              ),
-              TextFormField(
-                decoration: InputDecoration(
-                  hintText: 'Username',
-                ),
-                onChanged: (val) {
-                  setState(() => username = val);
-                },
               ),
               TextFormField(
                 keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
                   hintText: 'Email',
                 ),
+                validator: (val) => val.isEmpty ? 'Enter email' : null,
+                onChanged: (val) {
+                  setState(() => email = val);
+                },
               ),
               TextFormField(
                 decoration: InputDecoration(
                   hintText: 'Password',
                 ),
                 obscureText: true,
+                validator: (val) => val.length < 6 ? 'Enter a password 6+ chars long' : null,
                 onChanged: (val) {
                   setState(() => password = val);
                 },
@@ -95,15 +99,24 @@ class _SignUpState extends State<SignUp> {
                   ),
                 ),
                 color: Colors.green[400],
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => Dashboard(),
-                    ),
-                  );
+                onPressed: () async {
+                  if (_formKey.currentState.validate()){
+                    setState(() => loading = true);
+                    dynamic result = await _auth.signUpWithEmailAndPassword(email, password);
+                    if(result == null){
+                      setState(() {
+                        error = 'please supply a valid email';
+                        loading = false;
+                      });
+                    }
+                  }
                 },
-              )
+              ),
+              SizedBox(height: 12.0),
+              Text(
+                error,
+                style: TextStyle(color: Colors.red, fontSize: 14.0),
+              ),
             ],
           ),
         ),

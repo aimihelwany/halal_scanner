@@ -1,19 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:halal_scanner/auth.dart';
 import 'package:halal_scanner/dashboard.dart';
 import 'package:halal_scanner/sign_up.dart';
+import 'package:halal_scanner/loading.dart';
 
 class SignIn extends StatefulWidget {
+
+  final Function toggleView;
+  SignIn({ this.toggleView });
+
   @override
   _SignInState createState() => _SignInState();
 }
 
 class _SignInState extends State<SignIn> {
-  String username = '';
+
+  final AuthService _auth = AuthService();
+  final _formKey = GlobalKey<FormState>();
+  bool loading = false;
+
+  String email = '';
   String password = '';
+  String error = '';
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return loading ? Loading() : Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.green[300],
@@ -24,12 +36,7 @@ class _SignInState extends State<SignIn> {
             icon: Icon(Icons.person),
             label: Text('Sign Up'),
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => SignUp(),
-                ),
-              );
+              widget.toggleView();
             },
           )
         ],
@@ -37,9 +44,10 @@ class _SignInState extends State<SignIn> {
       body: Container(
         padding: EdgeInsets.symmetric(
           horizontal: 50.0,
-          vertical: 10.0,
+          vertical: 5.0,
         ),
         child: Form(
+          key: _formKey,
           child: Column(
             children: <Widget>[
               CircleAvatar(
@@ -47,27 +55,25 @@ class _SignInState extends State<SignIn> {
                 radius: 70.0,
               ),
               SizedBox(
-                height: 10.0,
+                height: 5.0,
               ),
               Center(
                 child: Text(
                   'SIGN IN TO HALAL SCANNER APP',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontSize: 30.0,
+                    fontSize: 20.0,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
-              SizedBox(
-                height: 10.0,
-              ),
               TextFormField(
                 decoration: InputDecoration(
-                  hintText: 'Username',
+                  hintText: 'Email',
                 ),
+                validator: (val) => val.isEmpty ? 'Enter an email' : null,
                 onChanged: (val) {
-                  setState(() => username = val);
+                  setState(() => email = val);
                 },
               ),
               TextFormField(
@@ -75,12 +81,13 @@ class _SignInState extends State<SignIn> {
                   hintText: 'Password',
                 ),
                 obscureText: true,
+                validator: (val) => val.length < 6 ? 'Enter a password 6+ chars long' : null,
                 onChanged: (val) {
                   setState(() => password = val);
                 },
               ),
               SizedBox(
-                height: 20.0,
+                height: 5.0,
               ),
               RaisedButton(
                 child: Text(
@@ -91,15 +98,24 @@ class _SignInState extends State<SignIn> {
                   ),
                 ),
                 color: Colors.green[400],
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => Dashboard(),
-                    ),
-                  );
+                onPressed: () async {
+                  if (_formKey.currentState.validate()){
+                    setState(() => loading = true);
+                    dynamic result = await _auth.signInWithEmailAndPassword(email, password);
+                    if(result == null){
+                      setState(() {
+                        error = 'could not sign in with those credentials';
+                        loading = false;
+                      });
+                    }
+                  }
                 },
-              )
+              ),
+              SizedBox(height: 12.0),
+              Text(
+                error,
+                style: TextStyle(color: Colors.red, fontSize: 14.0),
+              ),
             ],
           ),
         ),

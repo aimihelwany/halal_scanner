@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:halal_scanner/auth.dart';
+import 'package:halal_scanner/dashboard.dart';
 import 'package:halal_scanner/result.dart';
 import 'package:halal_scanner/sign_in.dart';
 
 class Subscribe extends StatelessWidget {
+
+  final AuthService _auth = AuthService();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -15,13 +20,8 @@ class Subscribe extends StatelessWidget {
           FlatButton.icon(
             icon: Icon(Icons.logout),
             label: Text('Logout'),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => SignIn(),
-                ),
-              );
+            onPressed: () async {
+              await _auth.signOut();
             },
           )
         ],
