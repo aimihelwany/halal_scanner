@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:halal_scanner/admin_signIn.dart';
 import 'package:halal_scanner/auth.dart';
-import 'package:halal_scanner/dashboard.dart';
-import 'package:halal_scanner/sign_up.dart';
 import 'package:halal_scanner/loading.dart';
 
 class SignIn extends StatefulWidget {
@@ -89,6 +88,9 @@ class _SignInState extends State<SignIn> {
               SizedBox(
                 height: 5.0,
               ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
               RaisedButton(
                 child: Text(
                   'Sign In',
@@ -111,6 +113,25 @@ class _SignInState extends State<SignIn> {
                   }
                 },
               ),
+              SizedBox(width: 20),
+                FlatButton.icon(
+                  icon: Icon(Icons.person),
+                  label: Text('Admin',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20.0,
+                    ),
+                  ),
+                  color: Colors.green[400],
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AdminSignIn()),
+                      );
+                    }),
+                  ],
+                ),
               SizedBox(height: 12.0),
               Text(
                 error,

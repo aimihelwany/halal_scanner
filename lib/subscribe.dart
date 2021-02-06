@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:halal_scanner/auth.dart';
-import 'package:halal_scanner/dashboard.dart';
 import 'package:halal_scanner/result.dart';
-import 'package:halal_scanner/sign_in.dart';
 
 class Subscribe extends StatelessWidget {
 

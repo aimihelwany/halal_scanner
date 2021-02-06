@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:halal_scanner/auth.dart';
-import 'package:halal_scanner/dashboard.dart';
 import 'package:halal_scanner/loading.dart';
-import 'package:halal_scanner/sign_in.dart';
+
 
 class SignUp extends StatefulWidget {
 
@@ -88,7 +87,7 @@ class _SignUpState extends State<SignUp> {
                 },
               ),
               SizedBox(
-                height: 10.0,
+                height: 5.0,
               ),
               RaisedButton(
                 child: Text(
