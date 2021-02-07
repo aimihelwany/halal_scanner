@@ -1,29 +1,72 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:halal_scanner/addProduct.dart';
 import 'package:halal_scanner/auth.dart';
+import 'package:halal_scanner/nonhalal.dart';
 import 'package:halal_scanner/result.dart';
 import 'package:halal_scanner/subscribe.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
+final productsRef = Firestore.instance.collection('products');
+
 class Dashboard extends StatefulWidget {
+
   @override
   _DashboardState createState() => _DashboardState();
 }
 
 class _DashboardState extends State<Dashboard> {
+
   final AuthService _auth = AuthService();
   String search = '';
   String _data = '';
+  String bc = '-';
+  String bc2 = '*';
 
-  _scan() async {
-    await FlutterBarcodeScanner.scanBarcode(
-            '#000000', 'Cancel', true, ScanMode.BARCODE)
-        .then((value) => setState(() => _data = value));
+//  Future getProducts() async {
+//    productsRef.getDocuments().then((QuerySnapshot snapshot){
+//      snapshot.documents.forEach((DocumentSnapshot doc) {
+//        print(doc.data);
+//      });
+//    });
+//    DocumentSnapshot variable = await productsRef.document('H5SknNLvhz6CCTX7KvYM').get();
+//    setState(() => this.bc = variable['barcode']);
+//    if (variable['barcode']){
+//      print('yesss');
+//    }
+//    print(_data);
+//    print(variable['barcode']);
+//    print(variable['status']);
+//    return variable['barcode'];
+//  }
+
+  Future _scan() async {
+    String _data = await FlutterBarcodeScanner.scanBarcode(
+            '#000000', 'Cancel', true, ScanMode.BARCODE);
+        setState(() => this._data = _data);
+
+    DocumentSnapshot variable = await productsRef.document('bgIdZBl0BK3Y0hIvutzr').get();
+    setState(() => this.bc = variable['barcode']);
+
+    DocumentSnapshot variable2 = await productsRef.document('245Lg5RUboIY06vsCU0W').get();
+    setState(() => this.bc2 = variable2['barcode']);    
+
   }
 
   @override
   Widget build(BuildContext context) {
+
+//     Text(_data);
+      if (_data == bc){
+        return HalalResult();     
+      } else if (_data == bc2) {
+        return NonHalalResult();
+      } else {
+        print(_data);
+        print('not in data');
+        print(bc);
+      }
 
     return Scaffold(
       appBar: AppBar(
@@ -141,7 +184,7 @@ class _DashboardState extends State<Dashboard> {
                 fontWeight: FontWeight.w500,
                 color: Colors.white,
                 fontSize: 16.0),
-            labelBackgroundColor: Colors.greenAccent,
+            labelBackgroundColor: Colors.greenAccent,            
           ),
           // FAB 3
           SpeedDialChild(

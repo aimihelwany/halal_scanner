@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:halal_scanner/auth.dart';
-import 'package:halal_scanner/result.dart';
+//import 'package:halal_scanner/result.dart';
 
 class Subscribe extends StatelessWidget {
 
@@ -129,12 +129,12 @@ class Subscribe extends StatelessWidget {
                   padding: EdgeInsets.all(10.0),
                   color: Colors.green[400],
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                        MaterialPageRoute(
-                          builder: (context) => HalalResult(),
-                        ),
-                      );
+//                    Navigator.push(
+//                      context,
+//                        MaterialPageRoute(
+//                          builder: (context) => HalalResult(),
+//                        ),
+//                      );
                     },
                   child: Text('Subscribe',
                     style: TextStyle(
