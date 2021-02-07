@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:halal_scanner/addProduct.dart';
 import 'package:halal_scanner/auth.dart';
-import 'package:halal_scanner/product_form.dart';
 import 'package:halal_scanner/result.dart';
 import 'package:halal_scanner/subscribe.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
@@ -24,6 +24,7 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.green[300],
@@ -101,7 +102,6 @@ class _DashboardState extends State<Dashboard> {
                 );
               },
             ),
-            Text(_data),
           ],
         ),
       ),
@@ -136,7 +136,7 @@ class _DashboardState extends State<Dashboard> {
             child: Icon(Icons.camera_alt_rounded),
             backgroundColor: Colors.greenAccent,
             onTap: () => _scan(),
-            label: 'Camera',
+            label: 'Scan',
             labelStyle: TextStyle(
                 fontWeight: FontWeight.w500,
                 color: Colors.white,
@@ -148,14 +148,14 @@ class _DashboardState extends State<Dashboard> {
             child: Icon(Icons.add),
             backgroundColor: Colors.greenAccent,
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ProductForm(),
-                ),
-              );
-            },
-            label: 'Product',
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AddProduct(),
+                  ),
+                );
+              },
+            label: 'Add Product',
             labelStyle: TextStyle(
                 fontWeight: FontWeight.w500,
                 color: Colors.white,
