@@ -4,7 +4,6 @@ import 'package:halal_scanner/auth.dart';
 class HalalResult extends StatelessWidget {
 
   final AuthService _auth = AuthService();
-  
   @override
   Widget build(BuildContext context) {
     return Scaffold(

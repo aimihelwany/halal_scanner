@@ -49,7 +49,7 @@ class _DashboardState extends State<Dashboard> {
     DocumentSnapshot variable = await productsRef.document('bgIdZBl0BK3Y0hIvutzr').get();
     setState(() => this.bc = variable['barcode']);
 
-    DocumentSnapshot variable2 = await productsRef.document('245Lg5RUboIY06vsCU0W').get();
+    DocumentSnapshot variable2 = await productsRef.document('Wa1OLq1Iqse5AY6dKtb5').get();
     setState(() => this.bc2 = variable2['barcode']);    
 
   }
